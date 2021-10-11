@@ -16,6 +16,7 @@ W, H = 1000, 1000 # Window size
 WINDOW = pygame.display.set_mode((W, H)) # Main window
 pygame.display.set_icon(pygame.image.load('Images/maze-icon-12.jpg'))
 
+# Contains the solution to the maze
 final_path = []
 
 # Class to create vertices
@@ -166,12 +167,12 @@ def nodes_grid(rect_width: int, line_width: int, offset: int):
 
 # Draw the maze
 def draw():
-    node_count = len(g.vertices)
+    node_count = len(g.vertices)                                           # Total amount of nodes in the maze
     line_width = math.floor(1000/math.sqrt(node_count))                    # Pick a line-width relative to the size of the maze
     mid_width = W-line_width                                               # Width of the inside of the maze-border
     rect_width = math.floor(mid_width/(2*math.sqrt(node_count)-1))         # Width of the rectangles that make up the nodes in the maze
-    total_width = (math.sqrt(node_count)*2-1)*rect_width
-    offset = (mid_width-total_width)/2
+    total_width = (math.sqrt(node_count)*2-1)*rect_width                   # Total width of the maze
+    offset = (mid_width-total_width)/2                                     # Extra offset for the maze to be centered
     nodes, edges = nodes_grid(rect_width, line_width, offset)
     end_node = node_count
     if(node_count%2==0):
@@ -185,16 +186,15 @@ def draw():
             pygame.draw.rect(WINDOW, WHITISH, node)
     for key, edge in edges.items():
         pygame.draw.rect(WINDOW, WHITISH, edge)
-    rect = pygame.Rect(0, 0, W, H)
     for step in final_path:
         if(step != 1 and step != end_node):
             pygame.draw.rect(WINDOW, PURP, nodes[step])
         if(step != final_path[-1]):
             try: pygame.draw.rect(WINDOW, PURP, edges[(step, final_path[final_path.index(step)+1])])
             except: pygame.draw.rect(WINDOW, PURP, edges[(final_path[final_path.index(step)+1], step)])
-    pygame.draw.rect(WINDOW, BLACK, rect, line_width)
     return end_node
 
+# Recreate the path through recursion
 def find_path(s, e, path):
     if(e == s):
         return
@@ -203,6 +203,7 @@ def find_path(s, e, path):
             final_path.append(key)
             find_path(s, key, path)
 
+# Solve the maze by checking neighbours
 def solve(s):
     q = Queue()
     q.enqueue(s)
@@ -224,7 +225,8 @@ def solve(s):
                 visited[nextt-1] = True
     return path
 
-def bfs(e): # Find the shortest (and only) path in the maze
+# Find the shortest (and only) path in the maze
+def bfs(e): 
     s = 1
     path = solve(s)
     find_path(s, e, path)
