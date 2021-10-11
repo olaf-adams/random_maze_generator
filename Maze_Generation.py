@@ -8,7 +8,7 @@ import pygame
 BLACK = (0,0,0)
 WHITISH = (250,235,215)
 RANDOM = (121,213,43)
-BLUE = (173,216,230)
+PURP = (75,0,130)
 RED = (220,20,60)
 GREEN = (0,255,0)
 
@@ -87,17 +87,17 @@ class Queue:
 
 # Generate graph that will serve as the base for our maze (grid)
 def grid_gen(): 
-    n = random.randint(10, 50)  # Set size of the grid
+    n = random.randint(10, 50)           # Set size of the grid
     plus = n+n
     times = n*n
     for i in range(1,times+1):
         g.add_vertex(Vertex(i))
     for j in range(1, times+1):
-        x = random.randint(1,5)    # Pick a random edgeweight
+        x = random.randint(1,10)         # Pick a random horizontal edgeweight
         g.add_edge(j, plus+1-j, x)
         if j%n==0:
             plus += n+n
-        x = random.randint(1,10)
+        x = random.randint(1,10)         # Pick a random vertical edgeweight
         g.add_edge(j, j+1, x)
 
     print("Original: ",g.edges)
@@ -141,11 +141,11 @@ def prim(s = 0):
     return g.edges
 
 # Generate 2 dicts of rectangle-objects as tuples in order to store all nodes and edges
-def nodes_grid(rect_width: int, line_width: int):
+def nodes_grid(rect_width: int, line_width: int, offset: int):
     nodes = {} 
     edges = {} # {(parent_node, child_node) -> (left, top, rect_width, rect_width)}
-    top = int(line_width/2)
-    left = int(line_width/2)
+    top = int(line_width/2+offset)
+    left = int(line_width/2+offset)
     inc = int(rect_width*2)
     for j in g.vertices:
         nodes[j] = (left, top, rect_width, rect_width)
@@ -170,7 +170,9 @@ def draw():
     line_width = math.floor(1000/math.sqrt(node_count))                    # Pick a line-width relative to the size of the maze
     mid_width = W-line_width                                               # Width of the inside of the maze-border
     rect_width = math.floor(mid_width/(2*math.sqrt(node_count)-1))         # Width of the rectangles that make up the nodes in the maze
-    nodes, edges = nodes_grid(rect_width, line_width)
+    total_width = (math.sqrt(node_count)*2-1)*rect_width
+    offset = (mid_width-total_width)/2
+    nodes, edges = nodes_grid(rect_width, line_width, offset)
     end_node = node_count
     if(node_count%2==0):
         end_node = node_count+1-math.sqrt(node_count)
@@ -186,10 +188,10 @@ def draw():
     rect = pygame.Rect(0, 0, W, H)
     for step in final_path:
         if(step != 1 and step != end_node):
-            pygame.draw.rect(WINDOW, BLUE, nodes[step])
+            pygame.draw.rect(WINDOW, PURP, nodes[step])
         if(step != final_path[-1]):
-            try: pygame.draw.rect(WINDOW, BLUE, edges[(step, final_path[final_path.index(step)+1])])
-            except: pygame.draw.rect(WINDOW, BLUE, edges[(final_path[final_path.index(step)+1], step)])
+            try: pygame.draw.rect(WINDOW, PURP, edges[(step, final_path[final_path.index(step)+1])])
+            except: pygame.draw.rect(WINDOW, PURP, edges[(final_path[final_path.index(step)+1], step)])
     pygame.draw.rect(WINDOW, BLACK, rect, line_width)
     return end_node
 
@@ -200,7 +202,6 @@ def find_path(s, e, path):
         if e in value:
             final_path.append(key)
             find_path(s, key, path)
-    
 
 def solve(s):
     q = Queue()
@@ -222,7 +223,6 @@ def solve(s):
                 q.enqueue(nextt)
                 visited[nextt-1] = True
     return path
-
 
 def bfs(e): # Find the shortest (and only) path in the maze
     s = 1
