@@ -234,7 +234,7 @@ def bfs(e):
     final_path.append(e)
 
 # Display the pygame window and set basic parameters
-def display(graph): 
+def display(): 
     pygame.display.set_caption("Maze generation")
     count = 0
     while True:
@@ -259,7 +259,7 @@ def new_maze():
     grid_gen()
     mst = prim()
     print("MST:", mst)
-    display(g)
+    display()
 
 if __name__ == "__main__":
     g = Graph()
