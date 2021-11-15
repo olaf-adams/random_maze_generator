@@ -87,6 +87,13 @@ class Queue:
     def dequeue(self):
         return self.data.pop(0)
 
+# Check if the window needs to be closed
+def close():
+    for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
 # Generate graph that will serve as the base for our maze (grid)
 def grid_gen(): 
     n = random.randint(10, 50)           # Set size of the grid
@@ -188,6 +195,7 @@ def draw():
     for key, edge in edges.items():
         pygame.draw.rect(WINDOW, WHITISH, edge)
     for step in final_path:
+        close()
         if(step != 1 and step != end_node):
             pygame.draw.rect(WINDOW, PURP, nodes[step])
             pygame.display.flip()
