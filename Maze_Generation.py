@@ -3,6 +3,7 @@ import math
 from queue import PriorityQueue
 import heapq
 import pygame
+import time
 
 # RGB colors
 BLACK = (0,0,0)
@@ -189,9 +190,13 @@ def draw():
     for step in final_path:
         if(step != 1 and step != end_node):
             pygame.draw.rect(WINDOW, PURP, nodes[step])
+            pygame.display.flip()
+            time.sleep(0.05)
         if(step != final_path[-1]):
             try: pygame.draw.rect(WINDOW, PURP, edges[(step, final_path[final_path.index(step)+1])])
             except: pygame.draw.rect(WINDOW, PURP, edges[(final_path[final_path.index(step)+1], step)])
+            pygame.display.flip()
+            time.sleep(0.05)
     return end_node
 
 # Recreate the path through recursion
@@ -243,10 +248,11 @@ def display():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if event.type == pygame.KEYDOWN:
+                if(count < 1):
+                    bfs(end_node)
+                    count += 1
         end_node = draw()
-        if(count < 1):
-            bfs(end_node)
-        count += 1
         pygame.display.flip()
 
 # Generate a new maze
