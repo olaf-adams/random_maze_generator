@@ -102,11 +102,11 @@ def grid_gen():
     for i in range(1,times+1):
         g.add_vertex(Vertex(i))
     for j in range(1, times+1):
-        x = random.randint(1,10)         # Pick a random horizontal edgeweight
+        x = random.randint(1,500)         # Pick a random horizontal edgeweight
         g.add_edge(j, plus+1-j, x)
         if j%n==0:
             plus += n+n
-        x = random.randint(1,10)         # Pick a random vertical edgeweight
+        x = random.randint(1,500)         # Pick a random vertical edgeweight
         g.add_edge(j, j+1, x)
 
     print("Original: ",g.edges)
