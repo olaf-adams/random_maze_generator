@@ -257,9 +257,10 @@ def display():
                 pygame.quit()
                 quit()
             if event.type == pygame.KEYDOWN:
-                if(count < 1):
-                    bfs(end_node)
-                    count += 1
+                if event.key == pygame.K_RETURN:
+                    if(count < 1):
+                        bfs(end_node)
+                        count += 1
         end_node = draw()
         pygame.display.flip()
 
