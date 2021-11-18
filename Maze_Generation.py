@@ -182,6 +182,7 @@ def draw():
     total_width = (math.sqrt(node_count)*2-1)*rect_width                   # Total width of the maze
     offset = (mid_width-total_width)/2                                     # Extra offset for the maze to be centered
     nodes, edges = nodes_grid(rect_width, line_width, offset)
+    global end_node
     end_node = node_count
     if(node_count%2==0):
         end_node = node_count+1-math.sqrt(node_count)
@@ -261,7 +262,7 @@ def display():
                     if(count < 1):
                         bfs(end_node)
                         count += 1
-        end_node = draw()
+        draw()
         pygame.display.flip()
 
 # Generate a new maze
