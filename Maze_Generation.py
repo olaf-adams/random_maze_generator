@@ -6,8 +6,8 @@ import pygame
 import time
 
 # RGB colors
-BLACK = (0,0,0)
-WHITISH = (250,235,215)
+BLACK = (200,200,200)
+WHITISH = (255,255,255)
 RANDOM = (121,213,43)
 PURP = (75,0,130)
 RED = (220,20,60)
@@ -96,7 +96,7 @@ def close():
 
 # Generate graph that will serve as the base for our maze (grid)
 def grid_gen(): 
-    n = random.randint(10, 50)           # Set size of the grid
+    n = 51          # Set size of the grid
     plus = n+n
     times = n*n
     for i in range(1,times+1):
