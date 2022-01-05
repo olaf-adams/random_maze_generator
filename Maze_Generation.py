@@ -96,7 +96,7 @@ def close():
 
 # Generate graph that will serve as the base for our maze (grid)
 def grid_gen(): 
-    n = 51          # Set size of the grid
+    n = random.randint(20, 50)          # Set size of the grid
     plus = n+n
     times = n*n
     for i in range(1,times+1):
